@@ -5,13 +5,23 @@ const app = express();
 app.use((req, res, next) => {
   res.setHeader('x-server-date', new Date());
   return next();
-})
+});
+
+app.get('/throw', (req, res, next) => {
+  throw new Error('Something is wrong');
+});
+
+app.get('/next', (req, res, next) => {
+  setTimeout(() => {
+    next(new Error('something is wrong'));
+  }, 1000);
+});
 
 app.get('/', (req, res, next) => {
   return res.send('Hello, I am a webserver');
 });
 
-app.get('/tiem', (req, res, next) => {
+app.get('/time', (req, res, next) => {
   return res.send(new Date().toString());
 });
 
